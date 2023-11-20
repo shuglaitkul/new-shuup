@@ -11,13 +11,13 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'python -m venv shuup-venv'
-                sh 'shuup-venv\Scripts\activate && pip install django'
+                sh 'shuup-venv\\Scripts\\activate && pip install django'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'source shuup-venv\Scripts\activate && python manage.py migrate'
+                sh 'shuup-venv\\Scripts\\activate && python manage.py migrate'
             }
         }
 

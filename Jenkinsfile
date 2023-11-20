@@ -8,12 +8,11 @@ pipeline {
             }
         }
         
-        // stage('Build') {
-        //     steps {
-        //         sh 'python -m venv shuup-venv'
-        //         sh 'shuup-venv\\Scripts\\activate && pip install django'
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                sh 'python3 shuup-venv\\Scripts\\activate'
+            }
+        }
 
         // stage('Test') {
         //     steps {

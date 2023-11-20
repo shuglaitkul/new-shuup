@@ -7,24 +7,38 @@ pipeline {
                 checkout scm
             }
         }
-
+        
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                sh 'python -m venv shuup-venv'
+                sh 'source shuup-venv\Scripts\activate && pip install django'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh 'source shuup-venv\Scripts\activate && python manage.py migrate'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker build -t shuup-app .'
-                sh 'docker run -d -p 8080:8080 shuup-app'
+                sh 'rsync -avz --exclude shuup-venv ./ shuglaitkul@localhost:/var/jenkins_home/workspace/shuup_pipeline'
+                sh 'ssh shuglaitkul@localhost "sudo systemctl restart Localhost:8000"'
             }
         }
     }
+
+    post {
+        success {
+            // Notify on success 
+            echo 'Build and deployment successful!'
+        }
+
+        failure {
+            // Notify on failure
+            echo 'Build or deployment failed!'
+        }
+    }
 }
+

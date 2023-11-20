@@ -4,30 +4,26 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/shuglaitkul/new-shuup.git'
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                sh 'pip install -r requirements.txt'
-                sh 'python manage.py compile'
+                sh 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'python manage.py test'
-                sh 'python manage.py test --settings=integration.settings'
+                sh 'mvn test'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'python manage.py collectstatic --noinput'
-                sh 'rsync -avz static/ <production_server>:/path/to/webroot/static/'
-                sh 'rsync -avz media/ <production_server>:/path/to/webroot/media/'
-                sh 'sudo service nginx restart'
+                sh 'docker build -t shuup-app .'
+                sh 'docker run -d -p 8080:8080 shuup-app'
             }
         }
     }

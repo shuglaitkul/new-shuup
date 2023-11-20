@@ -6,9 +6,9 @@ services:
       context: .
       args:
         editable: 1
-      ports:
+    ports:
       - "8000:8000"
-      volumes:
+    volumes:
       - .:/app
       - /app/.sqlite
       - /app/shuup/admin/static
@@ -18,5 +18,5 @@ services:
       - /app/shuup/regions/static
       - /app/shuup/themes/classic_gray/static
       - /app/shuup/xtheme/static
-      tty: true
-      restart: unless-stopped
+    tty: true
+    restart: unless-stopped

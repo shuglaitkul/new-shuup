@@ -10,7 +10,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'python3 shuup-venv\\Scripts\\activate'
+                sh 'python3 "shuup-venv\Scripts\activate"'
             }
         }
 
